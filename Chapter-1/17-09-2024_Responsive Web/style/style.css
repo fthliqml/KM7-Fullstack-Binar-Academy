@@ -1,0 +1,59 @@
+@font-face {
+  font-family: Noto-Regular;
+  src: url("../public/assets/NotoSansWarangCiti-Regular.ttf");
+}
+
+h1 {
+  color: limegreen;
+  font-family: "Fascinate Inline", system-ui;
+}
+
+.container {
+  background-color: yellow;
+  min-height: 500px;
+  max-width: 1024px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.col {
+  background-color: red;
+  min-height: 200px;
+  width: 30%;
+  margin-bottom: 50px;
+}
+
+.col img {
+  width: 100%;
+  height: auto;
+}
+
+.hide-desktop-only {
+  display: none;
+}
+
+/* Tablet View */
+@media (max-width: 768px) {
+  h1 {
+    color: darkorange;
+    font-family: Noto-Regular;
+  }
+
+  .col {
+    width: 45%;
+  }
+}
+
+/* Mobile View */
+@media (max-width: 400px) {
+  h1 {
+    color: blue;
+    font-family: "Times New Roman", Times, serif;
+  }
+
+  .col {
+    width: 100%;
+  }
+}
