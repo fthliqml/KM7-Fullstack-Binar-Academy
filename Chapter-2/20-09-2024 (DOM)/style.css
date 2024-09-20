@@ -1,0 +1,22 @@
+body {
+  background-color: white;
+}
+
+p {
+  color: black;
+}
+
+#title {
+  text-align: left;
+  padding-top: 3%;
+}
+
+#click-me {
+  background-color: yellow;
+}
+
+.title-website {
+  color: aqua;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 20px;
+}

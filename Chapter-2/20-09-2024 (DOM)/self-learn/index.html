@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./index.js"></script>
+    <style>
+      body {
+        font-family: "Courier New", Courier, monospace;
+      }
+      label {
+        display: block;
+        margin-top: 1rem;
+      }
+      .data-container,
+      .result-container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin: 10px 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- login form -->
+    <section>
+      <div class="data-container">
+        <h1>DATA FORM</h1>
+        <form action="">
+          <div>
+            <label for="firstName">First Name :</label>
+            <input type="text" id="firstName" name="firstName" autocomplete="off" />
+          </div>
+          <div>
+            <label for="lastName">Last Name :</label>
+            <input type="text" id="lastName" name="lastName" />
+          </div>
+          <div>
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" autocomplete="off" />
+          </div>
+          <button type="button" id="submit">Submit</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- text show up -->
+    <section>
+      <div class="result-container">
+        <p id="hidFirstName" style="visibility: hidden"></p>
+        <p id="hidLastName" style="visibility: hidden"></p>
+        <p id="hidEmail" style="visibility: hidden"></p>
+      </div>
+    </section>
+  </body>
+</html>
