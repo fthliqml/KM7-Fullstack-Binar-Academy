@@ -58,7 +58,7 @@ footer {
 }
 
 .red {
-  color: red;
+  color: red !important;
 }
 
 .drum {
