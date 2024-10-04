@@ -40,8 +40,8 @@
     "availableAt": "2023-09-25T08:30:00.000Z",
     "transmission": "Manual",
     "available": true,
-    "type": "Hatchback",
-    "year": 2022,
+    "type": "bmw",
+    "year": "2024",
     "options": [
       "Sunroof",
       "Apple CarPlay",
@@ -55,7 +55,8 @@
       "Adaptive Suspension",
       "17-inch Alloy Wheels",
       "Vehicle Stability Assist"
-    ]
+    ],
+    "name": "batman x bmw"
   },
   {
     "id": "3",

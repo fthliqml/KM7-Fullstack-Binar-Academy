@@ -95,6 +95,43 @@ app.get("/api/v1/cars/:id", (req, res) => {
   });
 });
 
+// gunakan patch karna hanya mengubah satu atau beberapa data saja
+app.patch("/api/v1/cars/:id", (req, res) => {
+  // UPDATE .... from (table) where id = req.params.id
+  const idCar = req.params.id;
+  const cars = readJSON("cars.json");
+  // Object destrcuture
+  const { name, year, type } = req.body;
+
+  const car = cars.find((object) => object.id === idCar);
+
+  const carIndex = cars.findIndex((obj) => obj.id == idCar);
+
+  // object assign menggunakan spread operator
+  cars[carIndex] = { ...cars[carIndex], ...req.body };
+
+  // masukan / rewrite data json dalam file
+  fs.writeFile(
+    `${__dirname}/assets/data/cars.json`,
+    JSON.stringify(cars),
+    (err) => {
+      res.status(404).json({
+        status: "Failed",
+        message: "API not exist",
+      });
+    }
+  );
+
+  res.status(201).json({
+    status: "success",
+    message: "success add new car data",
+    isSuccess: true,
+    data: {
+      car: cars[carIndex],
+    },
+  });
+});
+
 // if url doesnt exist, run this code below
 app.use((req, res, next) => {
   // status not found
