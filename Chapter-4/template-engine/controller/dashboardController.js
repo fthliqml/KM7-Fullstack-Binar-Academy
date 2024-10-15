@@ -4,7 +4,10 @@ const { User } = require("../models");
 async function userPage(req, res) {
     try {
         const users = await User.findAll();
-        res.render("index", {
+        res.render("users/index", {
+            title: "Dashboard",
+            layout: "layouts/main-layout",
+            style: "index.css",
             users,
         });
     } catch (error) {
@@ -20,7 +23,11 @@ async function userPage(req, res) {
 
 function createPage(req, res) {
     try {
-        res.render("create");
+        res.render("users/create", {
+            title: "Create Form",
+            layout: "layouts/main-layout",
+            style: "create.css",
+        });
     } catch (error) {
         res.status(500).json({
             status: "Failed",

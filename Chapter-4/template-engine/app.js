@@ -1,9 +1,11 @@
-const morgan = require("morgan");
 const express = require("express");
+const expressLayouts = require("express-ejs-layouts");
+const morgan = require("morgan");
+const path = require("path");
+
 const usersRoute = require("./routes/usersRoute");
 const carsRoute = require("./routes/carsRoute");
 const dashboardRoute = require("./routes/dashboardRoute");
-const path = require("path");
 
 const app = express();
 const port = 3000;
@@ -29,17 +31,8 @@ app.use((req, res, next) => {
 });
 
 // Using templating engine
+app.use(expressLayouts);
 app.set("view engine", "ejs");
-
-app.get("/dashboard/admin/", (req, res) => {
-    try {
-        res.render("index", {
-            greeting: "Hallo FSW 2",
-        });
-    } catch (error) {
-        console.error(error);
-    }
-});
 
 // Health Check
 app.get("/", (req, res) => {
