@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Students extends Model {
+  class Products extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,35 +11,33 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Students.init(
+  Products.init(
     {
-      last_name: DataTypes.STRING,
-      first_name: DataTypes.STRING,
-      email: {
+      name: {
         type: DataTypes.STRING,
-        unique: {
-          msg: "Email is already exist !",
-        },
+        allowNull: false, // Harus di definisikan di migration & model
         validate: {
-          isEmail: {
-            msg: "Please enter valid email !",
+          notNull: {
+            msg: "Product name is required",
           },
         },
       },
-      password: {
-        type: DataTypes.STRING,
+      images: DataTypes.ARRAY(DataTypes.TEXT),
+      stock: DataTypes.INTEGER,
+      price: {
+        type: DataTypes.INTEGER,
         validate: {
-          len: {
-            args: [6, 100],
-            msg: "Password minimal have 6 characters !",
+          min: {
+            args: 5000,
+            msg: "Price must be higher than 5000 IDR",
           },
         },
       },
     },
     {
       sequelize,
-      modelName: "Students",
+      modelName: "Products",
     }
   );
-  return Students;
+  return Products;
 };

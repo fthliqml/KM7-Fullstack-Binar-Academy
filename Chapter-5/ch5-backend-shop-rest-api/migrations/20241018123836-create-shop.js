@@ -2,33 +2,37 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Students", {
+    await queryInterface.createTable("Shops", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      last_name: {
-        type: Sequelize.STRING,
-        defaultValue: "Mahasiswa FSW-2",
-      },
-      first_name: {
+      name: {
         allowNull: false,
         type: Sequelize.STRING,
+        validate: {
+          len: [4, 100],
+        },
       },
-      email: {
+      adminEmail: {
+        allowNull: false,
         type: Sequelize.STRING,
         validate: {
           isEmail: true,
         },
         unique: true,
       },
-      password: {
-        type: Sequelize.STRING,
-        validate: {
-          len: [6, 100],
+      productId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Products",
+          key: "id",
         },
+      },
+      userId: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -41,6 +45,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Students");
+    await queryInterface.dropTable("Shops");
   },
 };
