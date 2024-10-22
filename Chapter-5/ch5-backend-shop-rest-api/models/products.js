@@ -9,13 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Products.belongsTo(models.Shops, {
+        foreignKey: "shopId",
+        as: "shop",
+      });
     }
   }
   Products.init(
     {
       name: {
         type: DataTypes.STRING,
-        allowNull: false, // Harus di definisikan di migration & model
+        allowNull: false,
         validate: {
           notNull: {
             msg: "Product name is required",
@@ -23,15 +27,37 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       images: DataTypes.ARRAY(DataTypes.TEXT),
-      stock: DataTypes.INTEGER,
+      stock: {
+        type: DataTypes.INTEGER,
+        validate: {
+          min: {
+            args: 1,
+            msg: "Minimal stock must be 0",
+          },
+          max: {
+            args: 1000000,
+            msg: "Maximal stock must be 1000000",
+          },
+        },
+      },
       price: {
         type: DataTypes.INTEGER,
         validate: {
           min: {
             args: 5000,
-            msg: "Price must be higher than 5000 IDR",
+            msg: "Minimal price must be 5000 IDR",
           },
         },
+      },
+      shopId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Shops",
+          key: "id",
+        },
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
     },
     {

@@ -1,77 +1,31 @@
-const { Products, Shops } = require("../models");
+const { tr } = require("@faker-js/faker");
+const { Shops, Products, Users } = require("../models");
 
-const createProduct = async (req, res) => {
-  const { name, stock, price, shopId } = req.body;
+const createShop = async (req, res) => {
+  const { name, adminEmail, userId } = req.body;
 
   try {
-    const newProduct = await Products.create({
+    const newShop = await Shops.create({
       name,
-      stock,
-      price,
-      shopId,
+      adminEmail,
+      userId,
     });
 
     res.status(201).json({
       status: "Success",
-      message: "Success create new product",
+      message: "Success create new Shop",
       isSuccess: true,
       data: {
-        newProduct,
+        newShop,
       },
     });
   } catch (error) {
     console.log(error.name);
+    // console.log(error);
     if (error.name === "SequelizeValidationError") {
       const errorMessage = error.errors.map((err) => err.message);
       return res.status(400).json({
-        status: "Failed",
-        message: errorMessage[0],
-        isSuccess: false,
-        data: null,
-      });
-    } else if (error.name === "SequelizeDatabaseError") {
-      return res.status(400).json({
-        status: "Failed",
-        message: error.message || "Database error",
-        isSuccess: false,
-        data: null,
-      });
-    } else {
-      return res.status(500).json({
-        status: "Failed",
-        message: "An unexpected error occurred",
-        isSuccess: false,
-        data: null,
-      });
-    }
-  }
-};
-
-const getAllProduct = async (req, res) => {
-  try {
-    const products = await Products.findAll({
-      include: [
-        {
-          model: Shops,
-          as: "shop",
-        },
-      ],
-    });
-
-    res.status(200).json({
-      status: "Success",
-      message: "Success get products data",
-      isSuccess: true,
-      data: {
-        products,
-      },
-    });
-  } catch (error) {
-    console.log(error.name);
-    if (error.name === "SequelizeValidationError") {
-      const errorMessage = error.errors.map((err) => err.message);
-      return res.status(400).json({
-        status: "Failed",
+        status: "Fail",
         message: errorMessage[0],
         isSuccess: false,
         data: null,
@@ -79,7 +33,7 @@ const getAllProduct = async (req, res) => {
     }
 
     res.status(500).json({
-      status: "Failed",
+      status: "Fail",
       message: error.message,
       isSuccess: false,
       data: null,
@@ -87,28 +41,31 @@ const getAllProduct = async (req, res) => {
   }
 };
 
-const getProductById = async (req, res) => {
-  const id = req.params.id;
-
+const getAllShop = async (req, res) => {
   try {
-    const product = await Products.findOne({
-      where: {
-        id,
-      },
+    const shops = await Shops.findAll({
+      attributes: ["name"],
       include: [
         {
-          model: Shops,
-          as: "shop",
+          model: Products,
+          as: "products",
+          attributes: ["name", "images"],
+          required: true, // Comvert Outer Join -> Inner Join
+        },
+        {
+          model: Users,
+          as: "user",
+          attributes: ["name"],
         },
       ],
     });
 
     res.status(200).json({
       status: "Success",
-      message: "Success get product data",
+      message: "Success get shops data",
       isSuccess: true,
       data: {
-        product,
+        shops,
       },
     });
   } catch (error) {
@@ -116,7 +73,7 @@ const getProductById = async (req, res) => {
     if (error.name === "SequelizeValidationError") {
       const errorMessage = error.errors.map((err) => err.message);
       return res.status(400).json({
-        status: "Failed",
+        status: "Fail",
         message: errorMessage[0],
         isSuccess: false,
         data: null,
@@ -124,7 +81,7 @@ const getProductById = async (req, res) => {
     }
 
     res.status(500).json({
-      status: "Failed",
+      status: "Fail",
       message: error.message,
       isSuccess: false,
       data: null,
@@ -132,38 +89,76 @@ const getProductById = async (req, res) => {
   }
 };
 
-const updateProduct = async (req, res) => {
+const getShopById = async (req, res) => {
   const id = req.params.id;
-  const { name, stock, price } = req.body;
 
   try {
-    const product = await Products.findOne({
+    const Shop = await Shops.findOne({
       where: {
         id,
       },
     });
 
-    if (!product) {
+    res.status(200).json({
+      status: "Success",
+      message: "Success get shop data",
+      isSuccess: true,
+      data: {
+        Shop,
+      },
+    });
+  } catch (error) {
+    console.log(error.name);
+    if (error.name === "SequelizeValidationError") {
+      const errorMessage = error.errors.map((err) => err.message);
+      return res.status(400).json({
+        status: "Fail",
+        message: errorMessage[0],
+        isSuccess: false,
+        data: null,
+      });
+    }
+
+    res.status(500).json({
+      status: "Fail",
+      message: error.message,
+      isSuccess: false,
+      data: null,
+    });
+  }
+};
+
+const updateShop = async (req, res) => {
+  const id = req.params.id;
+  const { name, adminEmail } = req.body;
+
+  try {
+    const Shop = await Shops.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!Shop) {
       res.status(404).json({
-        status: "Failed",
+        status: "Fail",
         message: "Data not found",
         isSuccess: false,
         data: null,
       });
     }
 
-    await Products.update({
+    await Shops.update({
       name,
-      price,
-      stock,
+      adminEmail,
     });
 
     res.status(200).json({
       status: "Success",
-      message: "Success update product",
+      message: "Success update shop",
       isSuccess: true,
       data: {
-        product: {
+        Shop: {
           id,
           name,
           stock,
@@ -176,7 +171,7 @@ const updateProduct = async (req, res) => {
     if (error.name === "SequelizeValidationError") {
       const errorMessage = error.errors.map((err) => err.message);
       return res.status(400).json({
-        status: "Failed",
+        status: "Fail",
         message: errorMessage[0],
         isSuccess: false,
         data: null,
@@ -184,7 +179,7 @@ const updateProduct = async (req, res) => {
     }
 
     res.status(500).json({
-      status: "Failed",
+      status: "Fail",
       message: error.message,
       isSuccess: false,
       data: null,
@@ -192,30 +187,30 @@ const updateProduct = async (req, res) => {
   }
 };
 
-const deleteProduct = async (req, res) => {
+const deleteShop = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const product = await Products.findOne({
+    const Shop = await Shops.findOne({
       where: {
         id,
       },
     });
 
-    if (!product) {
+    if (!Shop) {
       res.status(404).json({
-        status: "Failed",
+        status: "Fail",
         message: "Data not found",
         isSuccess: false,
         data: null,
       });
     }
 
-    await Products.destroy();
+    await Shops.destroy();
 
     res.status(200).json({
       status: "Success",
-      message: "Success delete product",
+      message: "Success delete shop",
       isSuccess: true,
       data: null,
     });
@@ -224,7 +219,7 @@ const deleteProduct = async (req, res) => {
     if (error.name === "SequelizeValidationError") {
       const errorMessage = error.errors.map((err) => err.message);
       return res.status(400).json({
-        status: "Failed",
+        status: "Fail",
         message: errorMessage[0],
         isSuccess: false,
         data: null,
@@ -232,7 +227,7 @@ const deleteProduct = async (req, res) => {
     }
 
     res.status(500).json({
-      status: "Failed",
+      status: "Fail",
       message: error.message,
       isSuccess: false,
       data: null,
@@ -241,9 +236,9 @@ const deleteProduct = async (req, res) => {
 };
 
 module.exports = {
-  createProduct,
-  getAllProduct,
-  getProductById,
-  updateProduct,
-  deleteProduct,
+  createShop,
+  getAllShop,
+  getShopById,
+  updateShop,
+  deleteShop,
 };

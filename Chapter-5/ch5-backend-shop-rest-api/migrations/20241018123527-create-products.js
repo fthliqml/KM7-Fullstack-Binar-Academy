@@ -10,20 +10,19 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
-        allowNull: false, // Definisikan di migration dan model
+        allowNull: false,
         type: Sequelize.STRING,
       },
       images: {
         type: Sequelize.ARRAY(Sequelize.TEXT),
         defaultValue: [
-          "https://ik.imagekit.io/iqmal/image-car23_SopUwwZfQ.jpg?updatedAt=1729091144136",
+          "https://ik.imagekit.io/imamth/Profile-17-1729202156932_ieaMdNeZB.png?updatedAt=1729202158471",
         ],
       },
       stock: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
         validate: {
-          //Ga ngaruh kalo di migration pake validate
           max: 10000,
         },
       },
@@ -35,13 +34,25 @@ module.exports = {
           min: 5000,
         },
       },
+      shopId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Shops",
+          key: "id",
+        },
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

@@ -9,6 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      adminEmail: {
+        type: Sequelize.STRING,
+        unique: true,
+        validate: {
+          isEmail: true,
+        },
+        allowNull: true,
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -16,31 +24,25 @@ module.exports = {
           len: [4, 100],
         },
       },
-      adminEmail: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        validate: {
-          isEmail: true,
-        },
-        unique: true,
-      },
-      productId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Products",
-          key: "id",
-        },
-      },
       userId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },
