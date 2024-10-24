@@ -1,5 +1,5 @@
-const { tr } = require("@faker-js/faker");
 const { Shops, Products, Users } = require("../models");
+const { Op } = require("sequelize");
 
 const createShop = async (req, res) => {
   const { name, adminEmail, userId } = req.body;
@@ -43,14 +43,47 @@ const createShop = async (req, res) => {
 
 const getAllShop = async (req, res) => {
   try {
+    // Jaga req query
+    const { shopName, productName, stock } = req.query;
+
+    // Jika shopName tidak ada, maka matikan kondisi where
+    const whereCondition = shopName ? { name: shopName } : {};
+
+    // Dynamic filtering
+    const shopCondition = {};
+    const productCondition = {};
+
+    if (shopName) shopCondition.name = { [Op.iLike]: `%${shopName}%` };
+    if (productName) productCondition.name = { [Op.iLike]: `%${productName}%` };
+    if (stock) productCondition.stock = { [Op.lte]: stock }; // lower than
+
     const shops = await Shops.findAll({
       attributes: ["name"],
+      where: shopCondition,
+      /*
+      where: {
+        // iLike adalah non-case sensitive (uppercase or not is equal)
+        name: { [Op.iLike]: `%${shopName}%` },
+
+        // Shorthand LIKE %Shopname%
+        // name: { [Op.substring]: shopName },
+      },
+      */
+
+      /*
+      where: {
+        name: {
+          [Op.eq]: shopName,
+        },
+      },
+      */
       include: [
         {
           model: Products,
           as: "products",
-          attributes: ["name", "images"],
+          attributes: ["name", "images", "stock", "price"],
           required: true, // Comvert Outer Join -> Inner Join
+          where: productCondition,
         },
         {
           model: Users,
@@ -65,6 +98,7 @@ const getAllShop = async (req, res) => {
       message: "Success get shops data",
       isSuccess: true,
       data: {
+        totalData: shops.length,
         shops,
       },
     });
