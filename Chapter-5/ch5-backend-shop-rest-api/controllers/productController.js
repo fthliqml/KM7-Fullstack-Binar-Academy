@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Products, Shops } = require("../models");
 
 const createProduct = async (req, res) => {
@@ -48,12 +49,30 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProduct = async (req, res) => {
+  const { productName, stocklte, page } = req.query;
+  const productCondition = {};
+  const currPage = page || 1;
+  const limit = 10;
+
+  // Dynamic query
+  productName ? (productCondition.name = { [Op.iLike]: `%${productName}%` }) : null;
+  stocklte ? (productCondition.stock = { [Op.lte]: stocklte }) : null;
+
+  // Pagination
+
   try {
     const products = await Products.findAll({
+      limit,
+      offset: (currPage - 1) * limit, // pagination
+      attributes: {
+        exclude: ["createdAt", "updatedAt"], // menghilangkan attribut
+      },
+      where: productCondition,
       include: [
         {
           model: Shops,
           as: "shop",
+          attributes: ["id", "name", "userId"],
         },
       ],
     });
@@ -63,6 +82,7 @@ const getAllProduct = async (req, res) => {
       message: "Success get products data",
       isSuccess: true,
       data: {
+        totalData: products.length,
         products,
       },
     });

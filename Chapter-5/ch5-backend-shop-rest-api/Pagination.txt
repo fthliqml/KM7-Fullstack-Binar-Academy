@@ -1,0 +1,2 @@
+LIMIT 3 -> Membatasi table yang ditampilkan hanya 3 saja
+OFFSET 10 -> Skip 10 data teratas, berarti mulai dari 11
