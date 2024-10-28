@@ -49,23 +49,23 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProduct = async (req, res) => {
-  const { productName, stocklte, page } = req.query;
+  const { productName, stock, page, size } = req.query;
   const productCondition = {};
   const currPage = page || 1;
-  const limit = 10;
+  const limit = size || 10;
 
   // Dynamic query
   productName ? (productCondition.name = { [Op.iLike]: `%${productName}%` }) : null;
-  stocklte ? (productCondition.stock = { [Op.lte]: stocklte }) : null;
+  stock ? (productCondition.stock = { [Op.eq]: stock }) : null;
 
   // Pagination
 
   try {
-    const products = await Products.findAll({
+    const { count: totalData, rows: products } = await Products.findAndCountAll({
       limit,
       offset: (currPage - 1) * limit, // pagination
       attributes: {
-        exclude: ["createdAt", "updatedAt"], // menghilangkan attribut
+        exclude: ["createdAt", "updatedAt"], // menghilangkan attribute
       },
       where: productCondition,
       include: [
@@ -77,13 +77,21 @@ const getAllProduct = async (req, res) => {
       ],
     });
 
+    const totalPage = Math.ceil(totalData / limit);
+    const pageSize = totalData < limit ? totalData : limit;
+
     res.status(200).json({
       status: "Success",
       message: "Success get products data",
       isSuccess: true,
       data: {
-        totalData: products.length,
+        totalData,
         products,
+        pagination: {
+          page: currPage,
+          pageSize,
+          totalPage,
+        },
       },
     });
   } catch (error) {

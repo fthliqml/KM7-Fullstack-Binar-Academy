@@ -82,7 +82,7 @@ const getAllShop = async (req, res) => {
           model: Products,
           as: "products",
           attributes: ["name", "images", "stock", "price"],
-          required: true, // Comvert Outer Join -> Inner Join
+          required: true, // Convert Outer Join -> Inner Join
           where: productCondition,
         },
         {
@@ -195,8 +195,8 @@ const updateShop = async (req, res) => {
         Shop: {
           id,
           name,
-          stock,
-          price,
+          // stock,
+          // price,
         },
       },
     });
