@@ -116,6 +116,7 @@ const getAllProduct = async (req, res) => {
 };
 
 const getProductById = async (req, res) => {
+  console.log(`User Authenticate : ${JSON.stringify(req.user)}`);
   const id = req.params.id;
 
   try {
