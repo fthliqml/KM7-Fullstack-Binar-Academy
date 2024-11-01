@@ -1,0 +1,34 @@
+/* Style untuk keseluruhan navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #0d1115;
+  color: #ecf0f1;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style untuk list menu */
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style untuk tiap item menu */
+.navbar-menu a {
+  color: white;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hover effect */
+.navbar-menu a:hover {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  border-radius: 5px;
+}
