@@ -1,12 +1,12 @@
-import "./Navbar.css";
 import PropTypes from "prop-types";
 
-export default function Navbar(props) {
-  const menu = props.menu;
+import "../styles/Navbar.css";
+
+const Navbar = ({ menu, count }) => {
   return (
     <div className="navbar">
       <h3>
-        Binar Academy {">"} ({props.count})
+        Binar Academy {">"} ({count})
       </h3>
       <ul className="navbar-menu">
         {menu.map((item, index) => (
@@ -17,9 +17,11 @@ export default function Navbar(props) {
       </ul>
     </div>
   );
-}
+};
 
 Navbar.propTypes = {
   count: PropTypes.number.isRequired,
   menu: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
+
+export default Navbar;
