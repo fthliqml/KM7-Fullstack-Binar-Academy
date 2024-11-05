@@ -1,8 +1,18 @@
 import PropTypes from "prop-types";
+import { useNavigate, Link } from "react-router-dom";
 
-import "../styles/Navbar.css";
+import "./Navbar.css";
 
 const Navbar = ({ menu, count }) => {
+  // hook
+  const navigate = useNavigate();
+
+  // handler untuk mengarahkan ke suatu endpoint
+  function handleNavigation(e, path) {
+    e.prevent.default();
+    navigate(path);
+  }
+
   return (
     <div className="navbar">
       <h3>
@@ -11,7 +21,8 @@ const Navbar = ({ menu, count }) => {
       <ul className="navbar-menu">
         {menu.map((item, index) => (
           <li key={index}>
-            <a href="#">{item}</a>
+            {/* Link adalah navigasi antar halaman React tanpa refresh, hanya render halaman yang perlu saja */}
+            <Link to={`/${item}`}>{item}</Link>
           </li>
         ))}
       </ul>

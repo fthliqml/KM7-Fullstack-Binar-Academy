@@ -1,25 +1,18 @@
-import { useState } from "react";
-import "./styles/App.css";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
-import AboutMe from "./components/AboutMe";
+import Home from "./pages/Home/Home";
 
 function App() {
-  const name = "Muhammad Fatihul Iqmal";
-  const tech = "Fullstack Web Developer";
-  const [count, setCount] = useState(0);
-  const listMenu = ["Home", "About Me", "Dashboard", "FAQ", "Logout"];
-
   return (
-    <>
-      <Navbar count={count} menu={listMenu} />
-      <div className="content">
-        <AboutMe name={name} tech={tech} />
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        </div>
-      </div>
-    </>
+    <Router>
+      {/* <nav>
+        <Link to="/">Home</Link>
+      </nav> */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Home" element={<Home />} />
+      </Routes>
+    </Router>
   );
 }
 
