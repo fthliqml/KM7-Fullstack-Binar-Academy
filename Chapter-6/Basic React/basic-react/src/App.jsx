@@ -1,19 +1,27 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Home from "./pages/Home/Home";
+import Home from "@pages/Home/Home";
+import AboutMe from "@pages/AboutMe/AboutMe";
+import NotFound from "@pages/NotFound/NotFound";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: "/home",
+    element: <Home />,
+  },
+  {
+    path: "/about-me",
+    element: <AboutMe />,
+  },
+]);
 
 function App() {
-  return (
-    <Router>
-      {/* <nav>
-        <Link to="/">Home</Link>
-      </nav> */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/Home" element={<Home />} />
-      </Routes>
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
