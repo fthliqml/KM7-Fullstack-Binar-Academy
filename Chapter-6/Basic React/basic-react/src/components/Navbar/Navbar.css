@@ -19,7 +19,6 @@
 
 /* Style untuk tiap item menu */
 .navbar-menu a {
-  color: white;
   cursor: pointer;
   padding: 5px 10px;
   transition: background-color 0.3s, color 0.3s;

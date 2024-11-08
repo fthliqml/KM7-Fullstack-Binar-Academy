@@ -13,7 +13,7 @@ function AboutMe() {
 
   return (
     <>
-      <Navbar />
+      <Navbar active={"About Me"} />
       <div className="content">
         <HeroSection name={name} tech={tech} />
 

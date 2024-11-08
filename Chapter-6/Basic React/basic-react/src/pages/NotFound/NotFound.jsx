@@ -16,13 +16,14 @@ const NotFound = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        gap: "2rem",
       }}
     >
       <h1>404 NOT FOUND</h1>
       <p>
-        Go to home page <Link to={"/home"}>Home</Link>
+        Go to home page <Link to={"/dashboard"}>Home</Link>
       </p>
-      <button onClick={() => handleNavigation("/home")}>Home</button>
+      <button onClick={() => handleNavigation("/dashboard")}>Dashboard</button>
     </div>
   );
 };
